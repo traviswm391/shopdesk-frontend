@@ -128,7 +128,7 @@ export default function BillingPage() {
             className="flex items-center gap-2 w-full justify-center border border-gray-200 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition disabled:opacity-60"
           >
             <ExternalLink className="w-4 h-4" />
-            {portalLoading ? "Loading..." : "Manage Subscription">
+            {portalLoading ? "Loading..." : "Manage Subscription"}
           </button>
         ) : (
           <button
@@ -137,7 +137,7 @@ export default function BillingPage() {
             className="flex items-center gap-2 w-full justify-center bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-60"
           >
             <Zap className="w-4 h-4" />
-            {checkoutLoading ? "Loading..." : "Subscribe Now — $299/mo"}
+            {checkoutLoading ? "Loading..." : "Subscribe Now â $299/mo"}
           </button>
         )}
       </div>
