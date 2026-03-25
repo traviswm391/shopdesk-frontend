@@ -10,6 +10,8 @@ const DEFAULT_HOURS = Object.fromEntries(
   DAYS.map((d, i) => [d, { open: "08:00", close: "17:00", closed: i === 6 }])
 );
 
+const inputClass = "w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500";
+
 export default function SettingsPage() {
   const { getToken } = useAuth();
   const [shop, setShop] = useState<any>(null);
@@ -21,6 +23,7 @@ export default function SettingsPage() {
     phone_display: "",
     greeting: "",
     services: "",
+    declined_services: "",
     business_hours: DEFAULT_HOURS,
   });
 
@@ -37,6 +40,7 @@ export default function SettingsPage() {
           phone_display: data.phone_display || "",
           greeting: data.greeting || "",
           services: (data.services || []).join(", "),
+          declined_services: (data.declined_services || []).join(", "),
           business_hours: data.business_hours || DEFAULT_HOURS,
         });
       } catch {
@@ -58,6 +62,7 @@ export default function SettingsPage() {
         phone_display: form.phone_display || undefined,
         greeting: form.greeting || undefined,
         services: form.services.split(",").map(s => s.trim()).filter(Boolean),
+        declined_services: form.declined_services.split(",").map(s => s.trim()).filter(Boolean),
         business_hours: form.business_hours,
       };
       if (shop) {
@@ -91,12 +96,12 @@ export default function SettingsPage() {
       </div>
 
       {shop?.phone_number && (
-        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 flex items-center gap-3">
-          <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+        <div className="rounded-xl p-4 mb-6 flex items-center gap-3" style={{ backgroundColor: "#fff7ed", border: "1px solid #fed7aa" }}>
+          <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: "#ea580c" }}>
             <Phone className="w-4 h-4 text-white" />
           </div>
           <div>
-            <div className="text-xs text-blue-600 font-medium">Your AI Phone Number</div>
+            <div className="text-xs font-medium" style={{ color: "#ea580c" }}>Your AI Phone Number</div>
             <div className="font-bold text-gray-900">{shop.phone_number}</div>
             <div className="text-xs text-gray-400">Forward or advertise this number for AI to answer</div>
           </div>
@@ -104,7 +109,7 @@ export default function SettingsPage() {
       )}
 
       <form onSubmit={handleSave} className="space-y-6">
-        <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
           <h2 className="font-semibold text-gray-800">Basic Info</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Shop Name *</label>
@@ -112,7 +117,7 @@ export default function SettingsPage() {
               required
               value={form.name}
               onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputClass}
               placeholder="e.g. Mike's Auto Repair"
             />
           </div>
@@ -121,7 +126,7 @@ export default function SettingsPage() {
             <input
               value={form.address}
               onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputClass}
               placeholder="123 Main St, City, State"
             />
           </div>
@@ -130,35 +135,52 @@ export default function SettingsPage() {
             <input
               value={form.phone_display}
               onChange={e => setForm(f => ({ ...f, phone_display: e.target.value }))}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputClass}
               placeholder="(555) 123-4567"
             />
           </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
+        <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
           <h2 className="font-semibold text-gray-800">AI Receptionist</h2>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Opening Greeting</label>
             <input
               value={form.greeting}
               onChange={e => setForm(f => ({ ...f, greeting: e.target.value }))}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Thank you for calling Mike's Auto Repair, how can I help you today?"
+              className={inputClass}
+              placeholder="Thanks for calling Mike's Auto Repair, what can we do for you?"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Services Offered (comma separated)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Services Offered
+              <span className="text-gray-400 font-normal ml-1">(comma separated)</span>
+            </label>
             <input
               value={form.services}
               onChange={e => setForm(f => ({ ...f, services: e.target.value }))}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputClass}
               placeholder="Oil change, brake service, tire rotation, diagnostics, transmission"
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Services We Don't Accept
+              <span className="text-gray-400 font-normal ml-1">(comma separated)</span>
+            </label>
+            <input
+              value={form.declined_services}
+              onChange={e => setForm(f => ({ ...f, declined_services: e.target.value }))}
+              className={inputClass}
+              placeholder="e.g. Engine swaps, body work, transmission rebuilds"
+            />
+            <p className="text-xs text-gray-400 mt-1">
+              The AI will tell callers these jobs aren't handled here and won't book them.
+            </p>
+          </div>
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h2 className="font-semibold text-gray-800 mb-4">Business Hours</h2>
           <div className="space-y-3">
             {DAYS.map(day => {
@@ -171,7 +193,7 @@ export default function SettingsPage() {
                       type="checkbox"
                       checked={!h.closed}
                       onChange={e => updateHours(day, "closed", !e.target.checked)}
-                      className="w-4 h-4 rounded"
+                      className="w-4 h-4 rounded accent-orange-500"
                     />
                     <span className="text-xs text-gray-500">Open</span>
                   </label>
@@ -181,14 +203,14 @@ export default function SettingsPage() {
                         type="time"
                         value={h.open}
                         onChange={e => updateHours(day, "open", e.target.value)}
-                        className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                       />
                       <span className="text-gray-400 text-sm">to</span>
                       <input
                         type="time"
                         value={h.close}
                         onChange={e => updateHours(day, "close", e.target.value)}
-                        className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="border border-gray-200 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                       />
                     </>
                   )}
@@ -202,7 +224,8 @@ export default function SettingsPage() {
         <button
           type="submit"
           disabled={saving}
-          className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-60"
+          className="flex items-center gap-2 text-white px-6 py-3 rounded-lg font-medium transition disabled:opacity-60"
+          style={{ backgroundColor: saving ? "#9a3412" : "#ea580c" }}
         >
           <Save className="w-4 h-4" />
           {saving ? "Saving..." : saved ? "Saved!" : "Save Settings"}
