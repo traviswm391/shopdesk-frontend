@@ -57,14 +57,15 @@ export default function DashboardPage() {
   if (!shop) return (
     <div className="flex items-center justify-center h-full">
       <div className="text-center max-w-md">
-        <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <Phone className="w-8 h-8 text-blue-600" />
+        <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: "#fff7ed" }}>
+          <Phone className="w-8 h-8" style={{ color: "#ea580c" }} />
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Set up your shop</h2>
         <p className="text-gray-500 mb-6">Configure your AI receptionist in a few minutes.</p>
         <Link
           href="/dashboard/settings"
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+          className="text-white px-6 py-3 rounded-lg font-medium transition"
+          style={{ backgroundColor: "#ea580c" }}
         >
           Get Started
         </Link>
@@ -73,10 +74,10 @@ export default function DashboardPage() {
   );
 
   const statCards = [
-    { label: "Total Calls", value: stats?.total_calls ?? 0, icon: Phone, color: "blue" },
-    { label: "Appointments Booked", value: stats?.appointments_booked ?? 0, icon: Calendar, color: "green" },
-    { label: "Conversion Rate", value: `${stats?.conversion_rate ?? 0}%`, icon: TrendingUp, color: "purple" },
-    { label: "Avg Call Duration", value: `${Math.round((stats?.avg_duration_seconds ?? 0) / 60)}m`, icon: Clock, color: "orange" },
+    { label: "Total Calls", value: stats?.total_calls ?? 0, icon: Phone },
+    { label: "Appointments Booked", value: stats?.appointments_booked ?? 0, icon: Calendar },
+    { label: "Conversion Rate", value: `${stats?.conversion_rate ?? 0}%`, icon: TrendingUp },
+    { label: "Avg Call Duration", value: `${Math.round((stats?.avg_duration_seconds ?? 0) / 60)}m`, icon: Clock },
   ];
 
   return (
@@ -104,7 +105,7 @@ export default function DashboardPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {statCards.map((s) => (
-          <div key={s.label} className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+          <div key={s.label} className="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm text-gray-500">{s.label}</span>
               <s.icon className="w-4 h-4 text-gray-400" />
@@ -115,10 +116,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Calls */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+      <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <h2 className="font-semibold text-gray-900">Recent Calls</h2>
-          <Link href="/dashboard/calls" className="text-blue-600 text-sm font-medium hover:underline">
+          <Link href="/dashboard/calls" className="text-sm font-medium hover:underline" style={{ color: "#ea580c" }}>
             View all
           </Link>
         </div>
