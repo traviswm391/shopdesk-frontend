@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Phone, Clock, MessageSquare, BarChart2, CheckCircle, Star } from "lucide-react";
 
@@ -27,7 +29,6 @@ export default function LandingPage() {
           </Link>
         </div>
       </nav>
-
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-8 pt-24 pb-20 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6" style={{ backgroundColor: "rgba(234,88,12,0.15)", color: "#fb923c" }}>
@@ -52,7 +53,6 @@ export default function LandingPage() {
           <p className="text-gray-500 text-sm">No contracts. Cancel anytime.</p>
         </div>
       </section>
-
       {/* Features */}
       <section className="py-20" style={{ backgroundColor: "#1e1e1e" }}>
         <div className="max-w-5xl mx-auto px-8">
@@ -77,7 +77,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
       {/* Pricing */}
       <section className="py-20">
         <div className="max-w-md mx-auto px-8 text-center">
@@ -113,7 +112,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="py-8 text-center text-gray-500 text-sm" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
         © {new Date().getFullYear()} ShopDesk AI. All rights reserved.
