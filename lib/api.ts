@@ -7,18 +7,17 @@ async function apiFetch(path: string, options: RequestInit = {}, clerkToken?: st
   };
 
   if (clerkToken) {
-    headers["Authorization"] = `Bearer ${clerkToken}`;
-    // Also pass as header for backend verification
+    headers["Authorization"] = "Bearer " + clerkToken;
     const payload = JSON.parse(atob(clerkToken.split(".")[1] || "e30="));
     if (payload.sub) headers["x-clerk-user-id"] = payload.sub;
     if (payload.email) headers["x-clerk-user-email"] = payload.email;
   }
 
-  const res = await fetch(`${API_URL}${path}`, { ...options, headers });
+  const res = await fetch(API_URL + path, { ...options, headers });
 
   if (!res.ok) {
     const error = await res.json().catch(() => ({ detail: "Unknown error" }));
-    throw new Error(error.detail || `Request failed: ${res.status}`);
+    throw new Error(error.detail || "Request failed: " + res.status);
   }
 
   return res.json();
@@ -32,9 +31,9 @@ export const api = {
     apiFetch("/api/shops/me", { method: "PATCH", body: JSON.stringify(data) }, token),
 
   getCalls: (token: string, limit = 50) =>
-    apiFetch(`/api/calls/?limit=${limit}`, {}, token),
+    apiFetch("/api/calls/?limit=" + limit, {}, token),
   getCall: (token: string, id: string) =>
-    apiFetch(`/api/calls/${id}`, {}, token),
+    apiFetch("/api/calls/" + id, {}, token),
   getCallStats: (token: string) =>
     apiFetch("/api/calls/stats/summary", {}, token),
 
@@ -42,4 +41,8 @@ export const api = {
     apiFetch("/api/shops/billing/checkout", { method: "POST" }, token),
   getBillingPortal: (token: string) =>
     apiFetch("/api/shops/billing/portal", { method: "POST" }, token),
+
+  adminStats: (token: string) => apiFetch("/api/admin/stats", {}, token),
+  adminShops: (token: string) => apiFetch("/api/admin/shops", {}, token),
+  adminCalls: (token: string) => apiFetch("/api/admin/calls", {}, token),
 };
